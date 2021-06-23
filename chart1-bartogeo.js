@@ -1,84 +1,114 @@
+var data = [{
+    "code3": "CHN",
+    "z": 11256,
+    "code": "CN"
+},
+{
+    "code3": "USA",
+    "z": 5725,
+    "code": "US"
+},
+{
+    "code3": "IND",
+    "z": 2622,
+    "code": "IN"
+},
+{
+    "code3": "RUS",
+    "z": 1748,
+    "code": "RU"
+},
+{
+    "code3": "JPN",
+    "z": 1199,
+    "code": "JP"
+},
+{
+    "code3": "DEU",
+    "z": 753,
+    "code": "DE"
+},
+{
+    "code3": "DEU",
+    "z": 753,
+    "code": "DE"
+},
+{
+    "code3": "KOR",
+    "z": 695,
+    "code": "KR"
+},
+{
+    "code3": "SAU",
+    "z": 625,
+    "code": "SA"
+},
+{
+    "code3": "CAN",
+    "z": 594,
+    "code": "SA"
+},
+{
+    "code3": "IDN",
+    "z": 558,
+    "code": "SA"
+},
+];
+Highcharts.mapChart('container', {
+chart: {
+  borderWidth: 1,
+  map: 'custom/world'
+},
 
-var H = Highcharts,
-map = H.maps['custom/world-palestine-highres'],
-chart;
+title: {
+  text: 'World CO2 emission by country'
+},
 
-// Add series with state capital bubbles
-Highcharts.getJSON('https://cdn.jsdelivr.net/gh/highcharts/highcharts@v7.0.0/samples/data/us-capitals.json', function (json) {
-var data = [];
-json.forEach(function (p) {
-  p.z = p.population;
-  data.push(p);
-});
+subtitle: {
+  text: 'Demo of Highcharts map with bubbles'
+},
 
-chart = Highcharts.mapChart('container', {
-  title: {
-    text: 'Highcharts Maps lat/lon demo'
-  },
-
-  tooltip: {
-    pointFormat: '{point.capital}, {point.parentState}<br>' +
-
-      'Emission: {point.population}'
-  },
-
- 
-
-  series: [{
-    name: 'Basemap',
-    mapData: map,
-    borderColor: '#606060',
-    nullColor: 'rgba(200, 200, 200, 0.2)',
-    showInLegend: false
-  }, {
-    name: 'Separators',
-    type: 'mapline',
-    data: H.geojson(map, 'mapline'),
-    color: '#101010',
-    enableMouseTracking: false,
-    showInLegend: false
-  }, {
-    type: 'mapbubble',
-    dataLabels: {
-      enabled: true,
-      format: '{point.capital}'
-    },
-    name: 'Areas',
-    data: data,
-    maxSize: '12%',
-    color: H.getOptions().colors[0]
-  }]
-});
-});
-
-// Display custom label with lat/lon next to crosshairs
-document.getElementById('container').addEventListener('mousemove', function (e) {
-var position;
-if (chart) {
-  if (!chart.lab) {
-    chart.lab = chart.renderer.text('', 0, 0)
-      .attr({
-        zIndex: 5
-      })
-      .css({
-        color: '#505050'
-      })
-      .add();
-  }
-
-  e = chart.pointer.normalize(e);
-  position = chart.fromPointToLatLon({
-    x: chart.xAxis[0].toValue(e.chartX),
-    y: chart.yAxis[0].toValue(e.chartY)
-  });
-
+ series: [
+ {
+  name: 'Countries',
+  color: '#E0E0E0',
+  enableMouseTracking: false
+}, 
+        {
+name: 'Country',
+data: [
+  ['cn', 1],
+  ['us', 1],
+  ['in', 1],
+  ['jp', 1],
+  ['ru', 1],
+  ['de', 1],
+  ['kr', 1],
+  ['sa', 1],
+  ['ca', 1],
+  ['id', 1],
+],
+dataLabels: {
+  enabled: true,
   
-}
-});
+  formatter: function () {
+    if (this.point.value) {
+      return this.point.name;
+    }
+  }
+},
+      enableMouseTracking: false
 
-document.getElementById('container').addEventListener('mouseout', function () {
-if (chart && chart.lab) {
-  chart.lab.destroy();
-  chart.lab = null;
-}
-});
+},
+{
+  type: 'mapbubble',
+  name: 'CO2 Emission',
+  joinBy: ['iso-a3', 'code3'],
+  data: data,
+  minSize: 20,
+  maxSize: '15%',
+  tooltip: {
+    pointFormat: '{point.properties.hc-a2}: {point.z}'
+  }
+}]
+})
