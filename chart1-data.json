@@ -1,0 +1,18 @@
+[
+    {
+      "abbrev":"IM",
+      "conutry":"China",
+      "areaname":"Inner Mongolia",
+      "lat":43.3782,
+      "lon":115.0595,
+      "emission":26.2
+    },
+    {
+      "abbrev":"AK",
+      "conutry":"Alaska",
+      "areaname":"USA",
+      "lat":58.299740,
+      "lon":-134.406794,
+      "emission":31
+    }
+ ]
